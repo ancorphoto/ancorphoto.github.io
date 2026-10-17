@@ -18,6 +18,8 @@ main{width:min(1500px,94%);margin:0 auto 60px}
 .photo:hover img{transform:scale(1.035);filter:brightness(1.08)}
 .photo:focus-visible{outline:3px solid var(--accent);outline-offset:3px}
 footer{padding:26px 5vw 36px;text-align:center;color:var(--muted);font-size:13px}
+.empty-state{padding:56px 20px;margin:8px 0 20px;text-align:center;border:1px dashed #ffffff30;border-radius:15px;color:var(--muted);font-size:14px}
+.gallery:empty{display:none}
 .about{margin:64px auto 0;max-width:850px;padding:36px;border:1px solid #ffffff15;background:linear-gradient(135deg,#111a29,#0c111b);border-radius:20px;text-align:center}
 .about-label{font-size:11px;font-weight:800;letter-spacing:3px;color:var(--accent)}
 .about h2{font-size:clamp(26px,4vw,38px);margin:10px 0 14px;letter-spacing:-1px}
@@ -41,6 +43,7 @@ footer{padding:26px 5vw 36px;text-align:center;color:var(--muted);font-size:13px
   <p>Una colección de fotografías</p>
 </header>
 <main>
+  <div class="empty-state" id="empty-state">Tus fotografías aparecerán aquí cuando las añadas.</div>
   <div class="gallery" id="gallery" aria-label="Galería de fotografías"></div>
   <section class="about" id="quienes-somos">
     <div class="about-label">SOBRE NOSOTROS</div>
@@ -69,40 +72,13 @@ footer{padding:26px 5vw 36px;text-align:center;color:var(--muted);font-size:13px
 </div>
 <script>
 const photos = [
-"https://images.unsplash.com/photo-1470770841072-f978cf4d019e?auto=format&fit=crop&w=1000&q=85",
-"https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=1000&q=85",
-"https://images.unsplash.com/photo-1472214103451-9374bd1c798e?auto=format&fit=crop&w=1000&q=85",
-"https://images.unsplash.com/photo-1501785888041-af3ef285b470?auto=format&fit=crop&w=1000&q=85",
-"https://images.unsplash.com/photo-1470252649378-9c29740c9fa8?auto=format&fit=crop&w=1000&q=85",
-"https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=1000&q=85",
-"https://images.unsplash.com/photo-1441974231531-c6227db76b6e?auto=format&fit=crop&w=1000&q=85",
-"https://images.unsplash.com/photo-1448375240586-882707db888b?auto=format&fit=crop&w=1000&q=85",
-"https://images.unsplash.com/photo-1472396961693-142e6e269027?auto=format&fit=crop&w=1000&q=85",
-"https://images.unsplash.com/photo-1469474968028-56623f02e42e?auto=format&fit=crop&w=1000&q=85",
-"https://images.unsplash.com/photo-1518837695005-2083093ee35b?auto=format&fit=crop&w=1000&q=85",
-"https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1000&q=85",
-"https://images.unsplash.com/photo-1497250681960-ef046c08a56e?auto=format&fit=crop&w=1000&q=85",
-"https://images.unsplash.com/photo-1511497584788-876760111969?auto=format&fit=crop&w=1000&q=85",
-"https://images.unsplash.com/photo-1500534623283-312aade485b7?auto=format&fit=crop&w=1000&q=85",
-"https://images.unsplash.com/photo-1500534314209-a25ddb2bd429?auto=format&fit=crop&w=1000&q=85",
-"https://images.unsplash.com/photo-1519681393784-d120267933ba?auto=format&fit=crop&w=1000&q=85",
-"https://images.unsplash.com/photo-1462331940025-496dfbfc7564?auto=format&fit=crop&w=1000&q=85",
-"https://images.unsplash.com/photo-1500534314209-a25ddb2bd429?auto=format&fit=crop&w=1000&q=85",
-"https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=1000&q=85",
-"https://images.unsplash.com/photo-1493246507139-91e8fad9978e?auto=format&fit=crop&w=1000&q=85",
-"https://images.unsplash.com/photo-1518837695005-2083093ee35b?auto=format&fit=crop&w=1000&q=85",
-"https://images.unsplash.com/photo-1501785888041-af3ef285b470?auto=format&fit=crop&w=1000&q=85",
-"https://images.unsplash.com/photo-1470770841072-f978cf4d019e?auto=format&fit=crop&w=1000&q=85",
-"https://images.unsplash.com/photo-1470252649378-9c29740c9fa8?auto=format&fit=crop&w=1000&q=85",
-"https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=1000&q=85",
-"https://images.unsplash.com/photo-1441974231531-c6227db76b6e?auto=format&fit=crop&w=1000&q=85",
-"https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1000&q=85",
-"https://images.unsplash.com/photo-1497250681960-ef046c08a56e?auto=format&fit=crop&w=1000&q=85",
-"https://images.unsplash.com/photo-1511497584788-876760111969?auto=format&fit=crop&w=1000&q=85",
-"https://images.unsplash.com/photo-1500534623283-312aade485b7?auto=format&fit=crop&w=1000&q=85",
-"https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=1000&q=85"
+  // Añade aquí las rutas de tus propias fotos, por ejemplo:
+  // "fotos/foto1.jpg",
+  // "fotos/foto2.jpg"
 ];
 const gallery=document.getElementById('gallery');
+const emptyState=document.getElementById('empty-state');
+emptyState.hidden = photos.length > 0;
 const viewer=document.getElementById('viewer');
 const large=document.getElementById('large');
 let current=0;
