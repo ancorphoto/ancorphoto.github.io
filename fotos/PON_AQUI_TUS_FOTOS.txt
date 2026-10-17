@@ -1,0 +1,1 @@
+Añade portada.jpg y foto1.jpg hasta foto9.jpg. Consulta LEEME.txt.
